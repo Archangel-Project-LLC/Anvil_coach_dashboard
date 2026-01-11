@@ -1,1 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anvil Coaching Systems</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --bg-dark: #051223;
+            --bg-card: #0a1e35;
+            --bg-elevated: #0f2847;
+            --bg-hover: #143052;
+            --border: #1a3a5c;
+            --text-primary: #ffffff;
+            --text-secondary: #a0b8d0;
+            --text-muted: #6a8aa8;
+            --accent: #4a7ab0;
+            --accent-hover: #5a8ac4;
+            --success: #32d74b;
+            --warning: #ffd60a;
+            --danger: #ff453a;
+            --protein: #ff6b6b;
+            --carbs: #ffd93d;
+            --fats: #6bcb77;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #3a6090);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-subtext {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Search */
+        .sidebar-search {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%236a8aa8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 12px center;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Client List */
+        .client-list-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .client-list-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .client-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--bg-elevated);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .client-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 12px;
+        }
+
+        .client-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s;
+            margin-bottom: 4px;
+        }
+
+        .client-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .client-item.active {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+        }
+
+        .client-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--accent);
+        }
+
+        .client-item.active .client-avatar {
+            background: var(--accent);
+            color: white;
+        }
+
+        .client-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .client-name {
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .client-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .client-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .client-status.pending {
+            background: var(--warning);
+        }
+
+        .client-status.inactive {
+            background: var(--text-muted);
+        }
+
+        /* Add Client Button */
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .add-client-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.15s;
+        }
+
+        .add-client-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            padding: 10px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s;
+        }
+
+        .header-btn:hover {
+            border-color: var(--text-muted);
+            background: var(--bg-hover);
+        }
+
+        .header-btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .header-btn.primary:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Dashboard Content */
+        .dashboard {
+            padding: 32px;
+        }
+
+        /* Client Header Card */
+        .client-header-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .client-header-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .client-header-info {
+            flex: 1;
+        }
+
+        .client-header-name {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .client-header-meta {
+            display: flex;
+            gap: 24px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .client-header-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .client-tags {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            background: var(--bg-elevated);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .tag.sport {
+            background: rgba(74, 122, 176, 0.2);
+            color: var(--accent);
+        }
+
+        .tag.phase {
+            background: rgba(50, 215, 75, 0.15);
+            color: var(--success);
+        }
+
+        .tag.comp {
+            background: rgba(255, 214, 10, 0.15);
+            color: var(--warning);
+        }
+
+        .client-header-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .header-stat {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .header-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 4px;
+        }
+
+        .header-stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .dashboard-grid.full-width {
+            grid-template-columns: 1fr;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-action {
+            font-size: 13px;
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .card-action:hover {
+            text-decoration: underline;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Targets Card */
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .target-item {
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .target-value {
+            font-size: 22px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 4px;
+        }
+
+        .target-value.calories { color: var(--text-primary); }
+        .target-value.protein { color: var(--protein); }
+        .target-value.carbs { color: var(--carbs); }
+        .target-value.fat { color: var(--fats); }
+        .target-value.fibre { color: var(--accent); }
+
+        .target-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Meal Plan Preview */
+        .meal-plan-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .meal-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+        }
+
+        .meal-name {
+            font-weight: 500;
+            width: 120px;
+            flex-shrink: 0;
+        }
+
+        .meal-foods {
+            flex: 1;
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .meal-macros {
+            display: flex;
+            gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Check-in History */
+        .checkin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkin-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 16px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+        }
+
+        .checkin-date {
+            font-weight: 500;
+            width: 100px;
+            flex-shrink: 0;
+        }
+
+        .checkin-weight {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            width: 80px;
+        }
+
+        .checkin-compliance {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .compliance-bar {
+            width: 100px;
+            height: 6px;
+            background: var(--bg-dark);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .compliance-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 3px;
+        }
+
+        .compliance-fill.medium {
+            background: var(--warning);
+        }
+
+        .compliance-fill.low {
+            background: var(--danger);
+        }
+
+        .compliance-value {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .checkin-status {
+            margin-left: auto;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .checkin-status.reviewed {
+            background: rgba(50, 215, 75, 0.15);
+            color: var(--success);
+        }
+
+        .checkin-status.pending {
+            background: rgba(255, 214, 10, 0.15);
+            color: var(--warning);
+        }
+
+        /* Notes Section */
+        .notes-area {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .notes-area:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Competition Schedule */
+        .comp-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .comp-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 16px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+        }
+
+        .comp-date {
+            text-align: center;
+            min-width: 50px;
+        }
+
+        .comp-date-day {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .comp-date-month {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .comp-info {
+            flex: 1;
+        }
+
+        .comp-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .comp-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .comp-weight {
+            text-align: right;
+        }
+
+        .comp-weight-target {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .comp-weight-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state-btn {
+            padding: 10px 20px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        /* Weight Trend Mini Chart */
+        .weight-trend {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 60px;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border-radius: 10px;
+        }
+
+        .weight-bar {
+            flex: 1;
+            background: var(--accent);
+            border-radius: 2px;
+            min-height: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .targets-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 80px;
+            }
+
+            .sidebar-header .logo-text,
+            .sidebar-header .logo-subtext,
+            .sidebar-search,
+            .client-list-header,
+            .client-info,
+            .add-client-btn span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 80px;
+            }
+
+            .client-item {
+                justify-content: center;
+            }
+
+            .add-client-btn {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .targets-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .client-header-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .client-header-meta {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .client-tags {
+                justify-content: center;
+            }
+
+            .client-header-stats {
+                width: 100%;
+            }
+
+            .header-stat {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">A</div>
+                    <div>
+                        <div class="logo-text">Anvil</div>
+                        <div class="logo-subtext">Coaching Systems</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-search">
+                <input type="text" class="search-input" placeholder="Search clients..." id="clientSearch">
+            </div>
+
+            <div class="client-list-header">
+                <span class="client-list-title">Clients</span>
+                <span class="client-count" id="clientCount">6</span>
+            </div>
+
+            <div class="client-list" id="clientList">
+                <!-- Client items populated by JS -->
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="add-client-btn" onclick="addClient()">
+                    <span>+</span>
+                    <span>Add Client</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <h1 class="page-title" id="pageTitle">Client Dashboard</h1>
+                <div class="header-actions">
+                    <button class="header-btn" onclick="openMealPlanner()">
+                        <span>🍽</span> Meal Planner
+                    </button>
+                    <button class="header-btn" onclick="openCheckIn()">
+                        <span>📋</span> New Check-in
+                    </button>
+                    <button class="header-btn primary" onclick="exportClient()">
+                        <span>↓</span> Export
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard" id="dashboard">
+                <!-- Dashboard content populated by JS -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sample client data (will come from Supabase later)
+        const clients = [
+            {
+                id: 1,
+                name: "Jake Thompson",
+                initials: "JT",
+                sport: "Olympic Weightlifting",
+                phase: "Competition Prep",
+                status: "active",
+                weight: 88.4,
+                targetWeight: 89,
+                startDate: "2024-09-15",
+                targets: { calories: 2800, protein: 180, carbs: 320, fat: 90, fibre: 35 },
+                nextComp: { name: "British Championships", date: "2026-03-15", weightClass: 89 },
+                comps: [
+                    { name: "British Championships", date: "2026-03-15", weightClass: 89 },
+                    { name: "English Open", date: "2026-06-20", weightClass: 89 }
+                ],
+                checkins: [
+                    { date: "2026-01-05", weight: 88.4, compliance: 92, status: "reviewed" },
+                    { date: "2025-12-29", weight: 88.8, compliance: 85, status: "reviewed" },
+                    { date: "2025-12-22", weight: 89.1, compliance: 78, status: "reviewed" }
+                ],
+                mealPlan: {
+                    meals: [
+                        { name: "Breakfast", foods: "Oats, eggs, banana, almond butter", macros: { p: 42, c: 85, f: 28 } },
+                        { name: "Lunch", foods: "Chicken, rice, broccoli, olive oil", macros: { p: 52, c: 95, f: 18 } },
+                        { name: "Pre-Training", foods: "Greek yoghurt, berries, honey", macros: { p: 25, c: 45, f: 5 } },
+                        { name: "Dinner", foods: "Salmon, sweet potato, spinach", macros: { p: 48, c: 65, f: 32 } }
+                    ]
+                },
+                notes: "Struggling with breakfast appetite. Consider splitting into two smaller meals. Comp prep on track - weight trending nicely."
+            },
+            {
+                id: 2,
+                name: "Sarah Mitchell",
+                initials: "SM",
+                sport: "Powerlifting",
+                phase: "Building",
+                status: "active",
+                weight: 62.1,
+                targetWeight: 63,
+                startDate: "2024-11-01",
+                targets: { calories: 2200, protein: 140, carbs: 250, fat: 75, fibre: 30 },
+                nextComp: null,
+                comps: [],
+                checkins: [
+                    { date: "2026-01-04", weight: 62.1, compliance: 95, status: "pending" }
+                ],
+                mealPlan: null,
+                notes: ""
+            },
+            {
+                id: 3,
+                name: "Marcus Chen",
+                initials: "MC",
+                sport: "CrossFit",
+                phase: "Maintenance",
+                status: "active",
+                weight: 78.5,
+                targetWeight: 78,
+                startDate: "2024-06-20",
+                targets: { calories: 3200, protein: 200, carbs: 380, fat: 100, fibre: 40 },
+                nextComp: { name: "CrossFit Open", date: "2026-02-15", weightClass: null },
+                comps: [
+                    { name: "CrossFit Open", date: "2026-02-15", weightClass: null }
+                ],
+                checkins: [
+                    { date: "2026-01-05", weight: 78.5, compliance: 88, status: "reviewed" },
+                    { date: "2025-12-29", weight: 78.3, compliance: 91, status: "reviewed" }
+                ],
+                mealPlan: {
+                    meals: [
+                        { name: "Breakfast", foods: "Eggs, toast, avocado, fruit", macros: { p: 35, c: 65, f: 30 } },
+                        { name: "Lunch", foods: "Beef mince, pasta, vegetables", macros: { p: 55, c: 110, f: 25 } },
+                        { name: "Snack", foods: "Protein shake, banana, nuts", macros: { p: 40, c: 50, f: 20 } },
+                        { name: "Dinner", foods: "Chicken, rice, mixed veg, sauce", macros: { p: 50, c: 120, f: 18 } }
+                    ]
+                },
+                notes: "High volume training block. Monitor fatigue levels."
+            },
+            {
+                id: 4,
+                name: "Emma O'Brien",
+                initials: "EO",
+                sport: "Boxing",
+                phase: "Weight Cut",
+                status: "pending",
+                weight: 54.8,
+                targetWeight: 52,
+                startDate: "2025-01-02",
+                targets: { calories: 1600, protein: 130, carbs: 140, fat: 55, fibre: 28 },
+                nextComp: { name: "National Championships", date: "2026-02-01", weightClass: 52 },
+                comps: [
+                    { name: "National Championships", date: "2026-02-01", weightClass: 52 }
+                ],
+                checkins: [],
+                mealPlan: null,
+                notes: "New client - awaiting audit form completion."
+            },
+            {
+                id: 5,
+                name: "David Williams",
+                initials: "DW",
+                sport: "Olympic Weightlifting",
+                phase: "Building",
+                status: "active",
+                weight: 95.2,
+                targetWeight: 96,
+                startDate: "2024-08-10",
+                targets: { calories: 3500, protein: 210, carbs: 420, fat: 110, fibre: 42 },
+                nextComp: null,
+                comps: [],
+                checkins: [
+                    { date: "2026-01-03", weight: 95.2, compliance: 82, status: "reviewed" }
+                ],
+                mealPlan: {
+                    meals: [
+                        { name: "Breakfast", foods: "Oats, protein, berries, PB", macros: { p: 50, c: 95, f: 30 } },
+                        { name: "Lunch", foods: "Turkey, rice, veg, oil", macros: { p: 55, c: 120, f: 22 } },
+                        { name: "Pre-Training", foods: "Bagel, banana, honey", macros: { p: 15, c: 85, f: 8 } },
+                        { name: "Post-Training", foods: "Shake, rice cakes, jam", macros: { p: 40, c: 70, f: 5 } },
+                        { name: "Dinner", foods: "Beef, potato, greens", macros: { p: 50, c: 50, f: 35 } }
+                    ]
+                },
+                notes: "Appetite has been low. Consider more calorie-dense options."
+            },
+            {
+                id: 6,
+                name: "Lisa Park",
+                initials: "LP",
+                sport: "Jiu-Jitsu",
+                phase: "Competition Prep",
+                status: "active",
+                weight: 58.9,
+                targetWeight: 57,
+                startDate: "2024-10-05",
+                targets: { calories: 1900, protein: 145, carbs: 200, fat: 65, fibre: 30 },
+                nextComp: { name: "IBJJF London Open", date: "2026-01-25", weightClass: 57 },
+                comps: [
+                    { name: "IBJJF London Open", date: "2026-01-25", weightClass: 57 },
+                    { name: "European Championships", date: "2026-04-10", weightClass: 57 }
+                ],
+                checkins: [
+                    { date: "2026-01-05", weight: 58.9, compliance: 94, status: "pending" },
+                    { date: "2025-12-29", weight: 59.3, compliance: 90, status: "reviewed" }
+                ],
+                mealPlan: {
+                    meals: [
+                        { name: "Breakfast", foods: "Eggs, toast, avocado", macros: { p: 30, c: 35, f: 22 } },
+                        { name: "Lunch", foods: "Chicken salad, quinoa", macros: { p: 45, c: 55, f: 15 } },
+                        { name: "Dinner", foods: "Fish, rice, vegetables", macros: { p: 50, c: 75, f: 18 } },
+                        { name: "Snack", foods: "Yoghurt, berries", macros: { p: 20, c: 25, f: 5 } }
+                    ]
+                },
+                notes: "Comp in 3 weeks. Start water loading protocol next week. Weight on track."
+            }
+        ];
+
+        let selectedClientId = 1;
+
+        // Render client list
+        function renderClientList(filter = '') {
+            const list = document.getElementById('clientList');
+            const filtered = clients.filter(c => 
+                c.name.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            list.innerHTML = filtered.map(client => `
+                <div class="client-item ${client.id === selectedClientId ? 'active' : ''}" onclick="selectClient(${client.id})">
+                    <div class="client-avatar">${client.initials}</div>
+                    <div class="client-info">
+                        <div class="client-name">${client.name}</div>
+                        <div class="client-meta">
+                            <span class="client-status ${client.status}"></span>
+                            <span>${client.sport}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('clientCount').textContent = filtered.length;
+        }
+
+        // Select client
+        function selectClient(id) {
+            selectedClientId = id;
+            renderClientList();
+            renderDashboard();
+        }
+
+        // Render dashboard
+        function renderDashboard() {
+            const client = clients.find(c => c.id === selectedClientId);
+            if (!client) return;
+
+            document.getElementById('pageTitle').textContent = client.name;
+
+            const dashboard = document.getElementById('dashboard');
+            
+            // Calculate days until comp
+            let daysUntilComp = null;
+            if (client.nextComp) {
+                const compDate = new Date(client.nextComp.date);
+                const today = new Date();
+                daysUntilComp = Math.ceil((compDate - today) / (1000 * 60 * 60 * 24));
+            }
+
+            // Calculate weeks with coach
+            const startDate = new Date(client.startDate);
+            const today = new Date();
+            const weeksWithCoach = Math.floor((today - startDate) / (1000 * 60 * 60 * 24 * 7));
+
+            dashboard.innerHTML = `
+                <!-- Client Header Card -->
+                <div class="client-header-card">
+                    <div class="client-header-avatar">${client.initials}</div>
+                    <div class="client-header-info">
+                        <h2 class="client-header-name">${client.name}</h2>
+                        <div class="client-header-meta">
+                            <span>📧 ${client.name.toLowerCase().replace(' ', '.')}@email.com</span>
+                            <span>📅 Started ${formatDate(client.startDate)}</span>
+                            <span>⏱ ${weeksWithCoach} weeks</span>
+                        </div>
+                        <div class="client-tags">
+                            <span class="tag sport">${client.sport}</span>
+                            <span class="tag phase">${client.phase}</span>
+                            ${daysUntilComp !== null ? `<span class="tag comp">${daysUntilComp} days to comp</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="client-header-stats">
+                        <div class="header-stat">
+                            <div class="header-stat-value">${client.weight}</div>
+                            <div class="header-stat-label">Current (kg)</div>
+                        </div>
+                        <div class="header-stat">
+                            <div class="header-stat-value">${client.targetWeight}</div>
+                            <div class="header-stat-label">Target (kg)</div>
+                        </div>
+                        <div class="header-stat">
+                            <div class="header-stat-value">${client.checkins.length > 0 ? client.checkins[0].compliance + '%' : '-'}</div>
+                            <div class="header-stat-label">Compliance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Targets Card -->
+                <div class="card" style="margin-bottom: 24px;">
+                    <div class="card-header">
+                        <h3 class="card-title">Daily Targets</h3>
+                        <span class="card-action" onclick="editTargets()">Edit</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="targets-grid">
+                            <div class="target-item">
+                                <div class="target-value calories">${client.targets.calories.toLocaleString()}</div>
+                                <div class="target-label">Calories</div>
+                            </div>
+                            <div class="target-item">
+                                <div class="target-value protein">${client.targets.protein}g</div>
+                                <div class="target-label">Protein</div>
+                            </div>
+                            <div class="target-item">
+                                <div class="target-value carbs">${client.targets.carbs}g</div>
+                                <div class="target-label">Carbs</div>
+                            </div>
+                            <div class="target-item">
+                                <div class="target-value fat">${client.targets.fat}g</div>
+                                <div class="target-label">Fat</div>
+                            </div>
+                            <div class="target-item">
+                                <div class="target-value fibre">${client.targets.fibre}g</div>
+                                <div class="target-label">Fibre</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Meal Plan Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Current Meal Plan</h3>
+                            <span class="card-action" onclick="openMealPlanner()">Edit Plan</span>
+                        </div>
+                        <div class="card-body">
+                            ${client.mealPlan ? renderMealPlan(client.mealPlan) : renderEmptyState('meal')}
+                        </div>
+                    </div>
+
+                    <!-- Check-in History Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Check-in History</h3>
+                            <span class="card-action" onclick="viewAllCheckins()">View All</span>
+                        </div>
+                        <div class="card-body">
+                            ${client.checkins.length > 0 ? renderCheckins(client.checkins) : renderEmptyState('checkin')}
+                        </div>
+                    </div>
+
+                    <!-- Competition Schedule Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Competition Schedule</h3>
+                            <span class="card-action" onclick="addComp()">Add Comp</span>
+                        </div>
+                        <div class="card-body">
+                            ${client.comps.length > 0 ? renderComps(client.comps) : renderEmptyState('comp')}
+                        </div>
+                    </div>
+
+                    <!-- Notes Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Coach Notes</h3>
+                            <span class="card-action" onclick="saveNotes()">Save</span>
+                        </div>
+                        <div class="card-body">
+                            <textarea class="notes-area" placeholder="Add notes about this client...">${client.notes}</textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render meal plan
+        function renderMealPlan(mealPlan) {
+            return `
+                <div class="meal-plan-preview">
+                    ${mealPlan.meals.map(meal => `
+                        <div class="meal-row">
+                            <div class="meal-name">${meal.name}</div>
+                            <div class="meal-foods">${meal.foods}</div>
+                            <div class="meal-macros">
+                                <span style="color: var(--protein)">${meal.macros.p}P</span>
+                                <span style="color: var(--carbs)">${meal.macros.c}C</span>
+                                <span style="color: var(--fats)">${meal.macros.f}F</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Render check-ins
+        function renderCheckins(checkins) {
+            return `
+                <div class="checkin-list">
+                    ${checkins.slice(0, 4).map(checkin => `
+                        <div class="checkin-item">
+                            <div class="checkin-date">${formatDateShort(checkin.date)}</div>
+                            <div class="checkin-weight">${checkin.weight} kg</div>
+                            <div class="checkin-compliance">
+                                <div class="compliance-bar">
+                                    <div class="compliance-fill ${checkin.compliance >= 90 ? '' : checkin.compliance >= 75 ? 'medium' : 'low'}" style="width: ${checkin.compliance}%"></div>
+                                </div>
+                                <span class="compliance-value">${checkin.compliance}%</span>
+                            </div>
+                            <span class="checkin-status ${checkin.status}">${checkin.status === 'reviewed' ? 'Reviewed' : 'Pending'}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Render competitions
+        function renderComps(comps) {
+            return `
+                <div class="comp-list">
+                    ${comps.map(comp => {
+                        const date = new Date(comp.date);
+                        return `
+                            <div class="comp-item">
+                                <div class="comp-date">
+                                    <div class="comp-date-day">${date.getDate()}</div>
+                                    <div class="comp-date-month">${date.toLocaleString('default', { month: 'short' })}</div>
+                                </div>
+                                <div class="comp-info">
+                                    <div class="comp-name">${comp.name}</div>
+                                    <div class="comp-meta">${date.getFullYear()}</div>
+                                </div>
+                                ${comp.weightClass ? `
+                                    <div class="comp-weight">
+                                        <div class="comp-weight-target">${comp.weightClass} kg</div>
+                                        <div class="comp-weight-label">Weight Class</div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // Render empty states
+        function renderEmptyState(type) {
+            const states = {
+                meal: {
+                    icon: '🍽',
+                    title: 'No meal plan yet',
+                    text: 'Create a meal plan for this client',
+                    action: 'Create Plan',
+                    onclick: 'openMealPlanner()'
+                },
+                checkin: {
+                    icon: '📋',
+                    title: 'No check-ins yet',
+                    text: 'Waiting for first check-in',
+                    action: 'Send Reminder',
+                    onclick: 'sendReminder()'
+                },
+                comp: {
+                    icon: '🏆',
+                    title: 'No competitions scheduled',
+                    text: 'Add upcoming competitions',
+                    action: 'Add Competition',
+                    onclick: 'addComp()'
+                }
+            };
+
+            const state = states[type];
+            return `
+                <div class="empty-state">
+                    <div class="empty-state-icon">${state.icon}</div>
+                    <div class="empty-state-title">${state.title}</div>
+                    <div class="empty-state-text">${state.text}</div>
+                    <button class="empty-state-btn" onclick="${state.onclick}">${state.action}</button>
+                </div>
+            `;
+        }
+
+        // Helper functions
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        function formatDateShort(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+        }
+
+        // Action functions (placeholders for now)
+        function addClient() {
+            alert('Add Client modal will open here');
+        }
+
+        function openMealPlanner() {
+            alert('Meal Planner will open here');
+        }
+
+        function openCheckIn() {
+            alert('Check-in form will open here');
+        }
+
+        function exportClient() {
+            alert('Export options will appear here');
+        }
+
+        function editTargets() {
+            alert('Edit targets modal will open here');
+        }
+
+        function viewAllCheckins() {
+            alert('Full check-in history will open here');
+        }
+
+        function addComp() {
+            alert('Add competition modal will open here');
+        }
+
+        function saveNotes() {
+            alert('Notes saved!');
+        }
+
+        function sendReminder() {
+            alert('Reminder sent to client');
+        }
+
+        // Search functionality
+        document.getElementById('clientSearch').addEventListener('input', (e) => {
+            renderClientList(e.target.value);
+        });
+
+        // Initial render
+        renderClientList();
+        renderDashboard();
+    </script>
+</body>
+</html>
