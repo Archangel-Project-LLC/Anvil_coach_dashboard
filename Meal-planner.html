@@ -81,21 +81,89 @@
             gap: 16px;
         }
 
-        .client-select {
-            padding: 8px 16px;
+        .client-search-container {
+            position: relative;
+            min-width: 250px;
+        }
+
+        .client-search-input {
+            width: 100%;
+            padding: 10px 16px;
             background: var(--bg-elevated);
             border: 1px solid var(--border);
             border-radius: 8px;
             color: var(--text-primary);
             font-size: 14px;
             font-family: inherit;
-            cursor: pointer;
-            min-width: 200px;
         }
 
-        .client-select:focus {
+        .client-search-input:focus {
             outline: none;
             border-color: var(--accent);
+        }
+
+        .client-search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .client-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .client-dropdown.active {
+            display: block;
+        }
+
+        .client-dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.15s;
+        }
+
+        .client-dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .client-dropdown-item:hover {
+            background: var(--bg-elevated);
+        }
+
+        .client-dropdown-item.selected {
+            background: var(--accent);
+        }
+
+        .client-dropdown-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .client-dropdown-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .client-dropdown-item.selected .client-dropdown-meta {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .no-clients {
+            padding: 16px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
         }
 
         .client-targets {
@@ -533,6 +601,50 @@
             display: none;
         }
 
+        /* Column Headers */
+        .meal-columns {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .col-food {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .col-amount {
+            width: 80px;
+            text-align: center;
+        }
+
+        .col-macros {
+            display: flex;
+            gap: 16px;
+            margin-left: auto;
+            width: 150px;
+        }
+
+        .col-macro {
+            width: 40px;
+            text-align: right;
+        }
+
+        .col-macro.p { color: var(--protein); }
+        .col-macro.c { color: var(--carbs); }
+        .col-macro.f { color: var(--fats); }
+
+        .col-action {
+            width: 24px;
+        }
+
         /* Meal Item */
         .meal-item {
             display: flex;
@@ -912,9 +1024,12 @@
         </div>
 
         <div class="header-center">
-            <select class="client-select" id="clientSelect">
-                <option value="">Select Client...</option>
-            </select>
+            <div class="client-search-container">
+                <input type="text" class="client-search-input" id="clientSearchInput" placeholder="Search clients..." autocomplete="off">
+                <div class="client-dropdown" id="clientDropdown">
+                    <!-- Client list will be rendered here -->
+                </div>
+            </div>
             <div class="client-targets" id="clientTargets">
                 <span class="target-item">No client selected</span>
             </div>
@@ -1211,50 +1326,92 @@
 
                 if (error) throw error;
                 clients = data || [];
-                renderClientSelect();
             } catch (error) {
                 console.error('Error loading clients:', error);
             }
         }
 
         // Render client dropdown
-        function renderClientSelect() {
-            const select = document.getElementById('clientSelect');
-            select.innerHTML = '<option value="">Select Client...</option>' +
-                clients.map(c => `<option value="${c.id}">${c.first_name} ${c.last_name}</option>`).join('');
+        function renderClientDropdown(filter = '') {
+            const dropdown = document.getElementById('clientDropdown');
+            const filtered = clients.filter(c => 
+                `${c.first_name} ${c.last_name}`.toLowerCase().includes(filter.toLowerCase()) ||
+                (c.sport && c.sport.toLowerCase().includes(filter.toLowerCase()))
+            );
+
+            if (filtered.length === 0) {
+                dropdown.innerHTML = '<div class="no-clients">No clients found</div>';
+                return;
+            }
+
+            dropdown.innerHTML = filtered.map(c => `
+                <div class="client-dropdown-item ${c.id === selectedClientId ? 'selected' : ''}" data-client-id="${c.id}">
+                    <div class="client-dropdown-name">${c.first_name} ${c.last_name}</div>
+                    <div class="client-dropdown-meta">${c.sport || 'No sport'} • ${c.target_calories || '-'} kcal</div>
+                </div>
+            `).join('');
+
+            // Add click handlers
+            dropdown.querySelectorAll('.client-dropdown-item').forEach(item => {
+                item.addEventListener('click', () => selectClient(item.dataset.clientId));
+            });
         }
 
-        // Handle client selection
-        document.getElementById('clientSelect').addEventListener('change', (e) => {
-            selectedClientId = e.target.value;
-            if (selectedClientId) {
-                const client = clients.find(c => c.id === selectedClientId);
-                if (client) {
-                    // Update targets from client
-                    targets.kcal = client.target_calories || 2500;
-                    targets.protein = client.target_protein || 180;
-                    targets.carbs = client.target_carbs || 300;
-                    targets.fat = client.target_fat || 80;
-                    targets.fibre = client.target_fibre || 35;
+        // Client search input handlers
+        const clientSearchInput = document.getElementById('clientSearchInput');
+        const clientDropdown = document.getElementById('clientDropdown');
 
-                    // Update UI
-                    document.getElementById('target-kcal').textContent = targets.kcal;
-                    document.getElementById('target-protein').textContent = targets.protein;
-                    document.getElementById('target-carbs').textContent = targets.carbs;
-                    document.getElementById('target-fat').textContent = targets.fat;
-                    document.getElementById('target-fibre').textContent = targets.fibre;
+        clientSearchInput.addEventListener('focus', () => {
+            renderClientDropdown(clientSearchInput.value);
+            clientDropdown.classList.add('active');
+        });
 
-                    document.getElementById('clientTargets').innerHTML = `
-                        <span class="target-item">${targets.kcal} kcal</span>
-                        <span class="target-item">${targets.protein}P</span>
-                        <span class="target-item">${targets.carbs}C</span>
-                        <span class="target-item">${targets.fat}F</span>
-                    `;
+        clientSearchInput.addEventListener('input', (e) => {
+            renderClientDropdown(e.target.value);
+            clientDropdown.classList.add('active');
+        });
 
-                    updateTotals();
-                }
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.client-search-container')) {
+                clientDropdown.classList.remove('active');
             }
         });
+
+        // Select client function
+        function selectClient(clientId) {
+            selectedClientId = clientId;
+            const client = clients.find(c => c.id === clientId);
+            
+            if (client) {
+                // Update input to show selected client
+                clientSearchInput.value = `${client.first_name} ${client.last_name}`;
+                clientDropdown.classList.remove('active');
+
+                // Update targets from client
+                targets.kcal = client.target_calories || 2500;
+                targets.protein = client.target_protein || 180;
+                targets.carbs = client.target_carbs || 300;
+                targets.fat = client.target_fat || 80;
+                targets.fibre = client.target_fibre || 35;
+
+                // Update UI
+                document.getElementById('target-kcal').textContent = targets.kcal;
+                document.getElementById('target-protein').textContent = targets.protein;
+                document.getElementById('target-carbs').textContent = targets.carbs;
+                document.getElementById('target-fat').textContent = targets.fat;
+                document.getElementById('target-fibre').textContent = targets.fibre;
+
+                document.getElementById('clientTargets').innerHTML = `
+                    <span class="target-item">${targets.kcal} kcal</span>
+                    <span class="target-item">${targets.protein}P</span>
+                    <span class="target-item">${targets.carbs}C</span>
+                    <span class="target-item">${targets.fat}F</span>
+                `;
+
+                updateTotals();
+            }
+        }
 
         // Render food list
         function renderFoodList() {
@@ -1470,6 +1627,18 @@
                                 <button class="meal-action-btn" onclick="deleteMeal(${index})">🗑</button>
                             </div>
                         </div>
+                        ${meal.items.length > 0 ? `
+                            <div class="meal-columns">
+                                <span class="col-food">Food</span>
+                                <span class="col-amount">Amount</span>
+                                <div class="col-macros">
+                                    <span class="col-macro p">P</span>
+                                    <span class="col-macro c">C</span>
+                                    <span class="col-macro f">F</span>
+                                </div>
+                                <span class="col-action"></span>
+                            </div>
+                        ` : ''}
                         <div class="drop-zone" data-meal="${index}">
                             ${meal.items.length === 0 ? '<div class="drop-placeholder">Drag foods here</div>' : ''}
                             ${meal.items.map(item => `
