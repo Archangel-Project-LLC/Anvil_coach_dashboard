@@ -924,7 +924,7 @@
         // Load clients from Supabase
         async function loadClients() {
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('clients')
                     .select('*')
                     .order('created_at', { ascending: false });
@@ -1188,7 +1188,7 @@
             };
 
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('clients')
                     .insert([clientData])
                     .select();
@@ -1214,7 +1214,7 @@
             const notes = document.getElementById('coachNotes').value;
 
             try {
-                const { error } = await supabase
+                const { error } = await supabaseClient
                     .from('clients')
                     .update({ coach_notes: notes })
                     .eq('id', selectedClientId);
