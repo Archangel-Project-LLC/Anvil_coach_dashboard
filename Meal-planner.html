@@ -605,43 +605,55 @@
         .meal-columns {
             display: flex;
             align-items: center;
-            padding: 8px 12px;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid var(--border);
+            padding: 10px 12px;
+            gap: 8px;
             background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
         }
 
-        .col-food {
+        .col-header {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            background: var(--bg-dark);
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .col-food-header {
             flex: 1;
             min-width: 140px;
         }
 
-        .col-amount {
+        .col-amount-header {
             width: 80px;
-            text-align: center;
         }
 
-        .col-macros {
+        .col-macros-header {
+            width: 180px;
             display: flex;
-            gap: 16px;
-            margin-left: auto;
-            width: 150px;
+            gap: 4px;
         }
 
-        .col-macro {
-            width: 40px;
-            text-align: right;
+        .col-macro-header {
+            flex: 1;
+            padding: 6px 8px;
+            background: var(--bg-dark);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
-        .col-macro.p { color: var(--protein); }
-        .col-macro.c { color: var(--carbs); }
-        .col-macro.f { color: var(--fats); }
+        .col-macro-header.p { color: var(--protein); }
+        .col-macro-header.c { color: var(--carbs); }
+        .col-macro-header.f { color: var(--fats); }
 
-        .col-action {
+        .col-action-header {
             width: 24px;
         }
 
@@ -649,7 +661,7 @@
         .meal-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             padding: 10px 12px;
             background: var(--bg-elevated);
             border: 1px solid var(--border);
@@ -661,37 +673,57 @@
             margin-bottom: 0;
         }
 
-        .meal-item-info {
+        .meal-item-food {
             flex: 1;
+            min-width: 140px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--bg-dark);
+            border-radius: 6px;
         }
 
         .meal-item-name {
             font-size: 13px;
             font-weight: 500;
-            min-width: 140px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .meal-item-amount {
+            width: 80px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
             background: var(--bg-dark);
-            padding: 4px 8px;
-            border-radius: 4px;
-            min-width: 60px;
+            padding: 8px 12px;
+            border-radius: 6px;
             text-align: center;
         }
 
         .meal-item-macros {
+            width: 180px;
             display: flex;
-            gap: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            margin-left: auto;
+            gap: 4px;
         }
+
+        .meal-item-macro {
+            flex: 1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 4px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .meal-item-macro.p { color: var(--protein); }
+        .meal-item-macro.c { color: var(--carbs); }
+        .meal-item-macro.f { color: var(--fats); }
 
         .remove-btn {
             width: 24px;
@@ -1629,29 +1661,29 @@
                         </div>
                         ${meal.items.length > 0 ? `
                             <div class="meal-columns">
-                                <span class="col-food">Food</span>
-                                <span class="col-amount">Amount</span>
-                                <div class="col-macros">
-                                    <span class="col-macro p">P</span>
-                                    <span class="col-macro c">C</span>
-                                    <span class="col-macro f">F</span>
+                                <div class="col-header col-food-header">Food</div>
+                                <div class="col-header col-amount-header">Amount</div>
+                                <div class="col-macros-header">
+                                    <div class="col-macro-header p">Protein</div>
+                                    <div class="col-macro-header c">Carbs</div>
+                                    <div class="col-macro-header f">Fat</div>
                                 </div>
-                                <span class="col-action"></span>
+                                <div class="col-action-header"></div>
                             </div>
                         ` : ''}
                         <div class="drop-zone" data-meal="${index}">
                             ${meal.items.length === 0 ? '<div class="drop-placeholder">Drag foods here</div>' : ''}
                             ${meal.items.map(item => `
                                 <div class="meal-item">
-                                    <div class="category-dot ${item.category}"></div>
-                                    <div class="meal-item-info">
+                                    <div class="meal-item-food">
+                                        <div class="category-dot ${item.category}"></div>
                                         <span class="meal-item-name">${item.name}</span>
-                                        <span class="meal-item-amount">${item.amount}g</span>
                                     </div>
+                                    <div class="meal-item-amount">${item.amount}g</div>
                                     <div class="meal-item-macros">
-                                        <span class="macro-value p"><span>${item.protein}</span>g</span>
-                                        <span class="macro-value c"><span>${item.carbs}</span>g</span>
-                                        <span class="macro-value f"><span>${item.fat}</span>g</span>
+                                        <div class="meal-item-macro p">${item.protein}</div>
+                                        <div class="meal-item-macro c">${item.carbs}</div>
+                                        <div class="meal-item-macro f">${item.fat}</div>
                                     </div>
                                     <button class="remove-btn" onclick="removeItem(${index}, ${item.id})">✕</button>
                                 </div>
