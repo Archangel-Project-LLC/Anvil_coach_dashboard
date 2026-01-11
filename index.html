@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anvil Coaching Systems</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -320,6 +321,34 @@
             padding: 32px;
         }
 
+        /* Empty State */
+        .empty-dashboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+            text-align: center;
+        }
+
+        .empty-dashboard-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            opacity: 0.5;
+        }
+
+        .empty-dashboard-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .empty-dashboard-text {
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            max-width: 400px;
+        }
+
         /* Client Header Card */
         .client-header-card {
             background: var(--bg-card);
@@ -433,10 +462,6 @@
             gap: 24px;
         }
 
-        .dashboard-grid.full-width {
-            grid-template-columns: 1fr;
-        }
-
         /* Cards */
         .card {
             background: var(--bg-card);
@@ -507,125 +532,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Meal Plan Preview */
-        .meal-plan-preview {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .meal-row {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 12px 16px;
-            background: var(--bg-elevated);
-            border-radius: 10px;
-        }
-
-        .meal-name {
-            font-weight: 500;
-            width: 120px;
-            flex-shrink: 0;
-        }
-
-        .meal-foods {
-            flex: 1;
-            font-size: 13px;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .meal-macros {
-            display: flex;
-            gap: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        /* Check-in History */
-        .checkin-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .checkin-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 14px 16px;
-            background: var(--bg-elevated);
-            border-radius: 10px;
-        }
-
-        .checkin-date {
-            font-weight: 500;
-            width: 100px;
-            flex-shrink: 0;
-        }
-
-        .checkin-weight {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-secondary);
-            width: 80px;
-        }
-
-        .checkin-compliance {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .compliance-bar {
-            width: 100px;
-            height: 6px;
-            background: var(--bg-dark);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .compliance-fill {
-            height: 100%;
-            background: var(--success);
-            border-radius: 3px;
-        }
-
-        .compliance-fill.medium {
-            background: var(--warning);
-        }
-
-        .compliance-fill.low {
-            background: var(--danger);
-        }
-
-        .compliance-value {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .checkin-status {
-            margin-left: auto;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .checkin-status.reviewed {
-            background: rgba(50, 215, 75, 0.15);
-            color: var(--success);
-        }
-
-        .checkin-status.pending {
-            background: rgba(255, 214, 10, 0.15);
-            color: var(--warning);
-        }
-
         /* Notes Section */
         .notes-area {
             width: 100%;
@@ -643,68 +549,6 @@
         .notes-area:focus {
             outline: none;
             border-color: var(--accent);
-        }
-
-        /* Competition Schedule */
-        .comp-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .comp-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 14px 16px;
-            background: var(--bg-elevated);
-            border-radius: 10px;
-        }
-
-        .comp-date {
-            text-align: center;
-            min-width: 50px;
-        }
-
-        .comp-date-day {
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 1;
-        }
-
-        .comp-date-month {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .comp-info {
-            flex: 1;
-        }
-
-        .comp-name {
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-
-        .comp-meta {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .comp-weight {
-            text-align: right;
-        }
-
-        .comp-weight-target {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .comp-weight-label {
-            font-size: 11px;
-            color: var(--text-muted);
         }
 
         /* Empty States */
@@ -744,22 +588,134 @@
             cursor: pointer;
         }
 
-        /* Weight Trend Mini Chart */
-        .weight-trend {
-            display: flex;
-            align-items: flex-end;
-            gap: 4px;
-            height: 60px;
-            padding: 16px;
-            background: var(--bg-elevated);
-            border-radius: 10px;
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
 
-        .weight-bar {
-            flex: 1;
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-secondary {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
             background: var(--accent);
-            border-radius: 2px;
-            min-height: 4px;
+            border: 1px solid var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-muted);
         }
 
         /* Responsive */
@@ -799,35 +755,6 @@
                 padding: 12px;
             }
         }
-
-        @media (max-width: 600px) {
-            .targets-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .client-header-card {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .client-header-meta {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .client-tags {
-                justify-content: center;
-            }
-
-            .client-header-stats {
-                width: 100%;
-            }
-
-            .header-stat {
-                flex: 1;
-            }
-        }
     </style>
 </head>
 <body>
@@ -850,15 +777,15 @@
 
             <div class="client-list-header">
                 <span class="client-list-title">Clients</span>
-                <span class="client-count" id="clientCount">6</span>
+                <span class="client-count" id="clientCount">0</span>
             </div>
 
             <div class="client-list" id="clientList">
-                <!-- Client items populated by JS -->
+                <div class="loading">Loading...</div>
             </div>
 
             <div class="sidebar-footer">
-                <button class="add-client-btn" onclick="addClient()">
+                <button class="add-client-btn" onclick="openAddClientModal()">
                     <span>+</span>
                     <span>Add Client</span>
                 </button>
@@ -868,7 +795,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="top-header">
-                <h1 class="page-title" id="pageTitle">Client Dashboard</h1>
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
                 <div class="header-actions">
                     <button class="header-btn" onclick="openMealPlanner()">
                         <span>🍽</span> Meal Planner
@@ -883,192 +810,168 @@
             </header>
 
             <div class="dashboard" id="dashboard">
-                <!-- Dashboard content populated by JS -->
+                <div class="empty-dashboard">
+                    <div class="empty-dashboard-icon">👥</div>
+                    <h2 class="empty-dashboard-title">No Client Selected</h2>
+                    <p class="empty-dashboard-text">Select a client from the sidebar or add a new client to get started.</p>
+                    <button class="btn btn-primary" onclick="openAddClientModal()">Add Your First Client</button>
+                </div>
             </div>
         </main>
     </div>
 
-    <script>
-        // Sample client data (will come from Supabase later)
-        const clients = [
-            {
-                id: 1,
-                name: "Jake Thompson",
-                initials: "JT",
-                sport: "Olympic Weightlifting",
-                phase: "Competition Prep",
-                status: "active",
-                weight: 88.4,
-                targetWeight: 89,
-                startDate: "2024-09-15",
-                targets: { calories: 2800, protein: 180, carbs: 320, fat: 90, fibre: 35 },
-                nextComp: { name: "British Championships", date: "2026-03-15", weightClass: 89 },
-                comps: [
-                    { name: "British Championships", date: "2026-03-15", weightClass: 89 },
-                    { name: "English Open", date: "2026-06-20", weightClass: 89 }
-                ],
-                checkins: [
-                    { date: "2026-01-05", weight: 88.4, compliance: 92, status: "reviewed" },
-                    { date: "2025-12-29", weight: 88.8, compliance: 85, status: "reviewed" },
-                    { date: "2025-12-22", weight: 89.1, compliance: 78, status: "reviewed" }
-                ],
-                mealPlan: {
-                    meals: [
-                        { name: "Breakfast", foods: "Oats, eggs, banana, almond butter", macros: { p: 42, c: 85, f: 28 } },
-                        { name: "Lunch", foods: "Chicken, rice, broccoli, olive oil", macros: { p: 52, c: 95, f: 18 } },
-                        { name: "Pre-Training", foods: "Greek yoghurt, berries, honey", macros: { p: 25, c: 45, f: 5 } },
-                        { name: "Dinner", foods: "Salmon, sweet potato, spinach", macros: { p: 48, c: 65, f: 32 } }
-                    ]
-                },
-                notes: "Struggling with breakfast appetite. Consider splitting into two smaller meals. Comp prep on track - weight trending nicely."
-            },
-            {
-                id: 2,
-                name: "Sarah Mitchell",
-                initials: "SM",
-                sport: "Powerlifting",
-                phase: "Building",
-                status: "active",
-                weight: 62.1,
-                targetWeight: 63,
-                startDate: "2024-11-01",
-                targets: { calories: 2200, protein: 140, carbs: 250, fat: 75, fibre: 30 },
-                nextComp: null,
-                comps: [],
-                checkins: [
-                    { date: "2026-01-04", weight: 62.1, compliance: 95, status: "pending" }
-                ],
-                mealPlan: null,
-                notes: ""
-            },
-            {
-                id: 3,
-                name: "Marcus Chen",
-                initials: "MC",
-                sport: "CrossFit",
-                phase: "Maintenance",
-                status: "active",
-                weight: 78.5,
-                targetWeight: 78,
-                startDate: "2024-06-20",
-                targets: { calories: 3200, protein: 200, carbs: 380, fat: 100, fibre: 40 },
-                nextComp: { name: "CrossFit Open", date: "2026-02-15", weightClass: null },
-                comps: [
-                    { name: "CrossFit Open", date: "2026-02-15", weightClass: null }
-                ],
-                checkins: [
-                    { date: "2026-01-05", weight: 78.5, compliance: 88, status: "reviewed" },
-                    { date: "2025-12-29", weight: 78.3, compliance: 91, status: "reviewed" }
-                ],
-                mealPlan: {
-                    meals: [
-                        { name: "Breakfast", foods: "Eggs, toast, avocado, fruit", macros: { p: 35, c: 65, f: 30 } },
-                        { name: "Lunch", foods: "Beef mince, pasta, vegetables", macros: { p: 55, c: 110, f: 25 } },
-                        { name: "Snack", foods: "Protein shake, banana, nuts", macros: { p: 40, c: 50, f: 20 } },
-                        { name: "Dinner", foods: "Chicken, rice, mixed veg, sauce", macros: { p: 50, c: 120, f: 18 } }
-                    ]
-                },
-                notes: "High volume training block. Monitor fatigue levels."
-            },
-            {
-                id: 4,
-                name: "Emma O'Brien",
-                initials: "EO",
-                sport: "Boxing",
-                phase: "Weight Cut",
-                status: "pending",
-                weight: 54.8,
-                targetWeight: 52,
-                startDate: "2025-01-02",
-                targets: { calories: 1600, protein: 130, carbs: 140, fat: 55, fibre: 28 },
-                nextComp: { name: "National Championships", date: "2026-02-01", weightClass: 52 },
-                comps: [
-                    { name: "National Championships", date: "2026-02-01", weightClass: 52 }
-                ],
-                checkins: [],
-                mealPlan: null,
-                notes: "New client - awaiting audit form completion."
-            },
-            {
-                id: 5,
-                name: "David Williams",
-                initials: "DW",
-                sport: "Olympic Weightlifting",
-                phase: "Building",
-                status: "active",
-                weight: 95.2,
-                targetWeight: 96,
-                startDate: "2024-08-10",
-                targets: { calories: 3500, protein: 210, carbs: 420, fat: 110, fibre: 42 },
-                nextComp: null,
-                comps: [],
-                checkins: [
-                    { date: "2026-01-03", weight: 95.2, compliance: 82, status: "reviewed" }
-                ],
-                mealPlan: {
-                    meals: [
-                        { name: "Breakfast", foods: "Oats, protein, berries, PB", macros: { p: 50, c: 95, f: 30 } },
-                        { name: "Lunch", foods: "Turkey, rice, veg, oil", macros: { p: 55, c: 120, f: 22 } },
-                        { name: "Pre-Training", foods: "Bagel, banana, honey", macros: { p: 15, c: 85, f: 8 } },
-                        { name: "Post-Training", foods: "Shake, rice cakes, jam", macros: { p: 40, c: 70, f: 5 } },
-                        { name: "Dinner", foods: "Beef, potato, greens", macros: { p: 50, c: 50, f: 35 } }
-                    ]
-                },
-                notes: "Appetite has been low. Consider more calorie-dense options."
-            },
-            {
-                id: 6,
-                name: "Lisa Park",
-                initials: "LP",
-                sport: "Jiu-Jitsu",
-                phase: "Competition Prep",
-                status: "active",
-                weight: 58.9,
-                targetWeight: 57,
-                startDate: "2024-10-05",
-                targets: { calories: 1900, protein: 145, carbs: 200, fat: 65, fibre: 30 },
-                nextComp: { name: "IBJJF London Open", date: "2026-01-25", weightClass: 57 },
-                comps: [
-                    { name: "IBJJF London Open", date: "2026-01-25", weightClass: 57 },
-                    { name: "European Championships", date: "2026-04-10", weightClass: 57 }
-                ],
-                checkins: [
-                    { date: "2026-01-05", weight: 58.9, compliance: 94, status: "pending" },
-                    { date: "2025-12-29", weight: 59.3, compliance: 90, status: "reviewed" }
-                ],
-                mealPlan: {
-                    meals: [
-                        { name: "Breakfast", foods: "Eggs, toast, avocado", macros: { p: 30, c: 35, f: 22 } },
-                        { name: "Lunch", foods: "Chicken salad, quinoa", macros: { p: 45, c: 55, f: 15 } },
-                        { name: "Dinner", foods: "Fish, rice, vegetables", macros: { p: 50, c: 75, f: 18 } },
-                        { name: "Snack", foods: "Yoghurt, berries", macros: { p: 20, c: 25, f: 5 } }
-                    ]
-                },
-                notes: "Comp in 3 weeks. Start water loading protocol next week. Weight on track."
-            }
-        ];
+    <!-- Add Client Modal -->
+    <div class="modal-overlay" id="addClientModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Client</h3>
+                <button class="modal-close" onclick="closeAddClientModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">First Name *</label>
+                        <input type="text" class="form-input" id="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name *</label>
+                        <input type="text" class="form-input" id="lastName" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email *</label>
+                    <input type="email" class="form-input" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Sport</label>
+                    <select class="form-input" id="sport">
+                        <option value="">Select sport...</option>
+                        <option value="Olympic Weightlifting">Olympic Weightlifting</option>
+                        <option value="Powerlifting">Powerlifting</option>
+                        <option value="CrossFit">CrossFit</option>
+                        <option value="Boxing">Boxing</option>
+                        <option value="MMA">MMA</option>
+                        <option value="Jiu-Jitsu">Jiu-Jitsu</option>
+                        <option value="Wrestling">Wrestling</option>
+                        <option value="Bodybuilding">Bodybuilding</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Current Weight (kg)</label>
+                        <input type="number" step="0.1" class="form-input" id="currentWeight">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Target Weight (kg)</label>
+                        <input type="number" step="0.1" class="form-input" id="targetWeight">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phase</label>
+                    <select class="form-input" id="phase">
+                        <option value="Onboarding">Onboarding</option>
+                        <option value="Building">Building</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Competition Prep">Competition Prep</option>
+                        <option value="Weight Cut">Weight Cut</option>
+                        <option value="Recovery">Recovery</option>
+                    </select>
+                </div>
+                <h4 style="margin: 24px 0 16px; font-size: 14px; color: var(--text-secondary);">Daily Targets</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Calories</label>
+                        <input type="number" class="form-input" id="targetCalories">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Protein (g)</label>
+                        <input type="number" class="form-input" id="targetProtein">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Carbs (g)</label>
+                        <input type="number" class="form-input" id="targetCarbs">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fat (g)</label>
+                        <input type="number" class="form-input" id="targetFat">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fibre (g)</label>
+                    <input type="number" class="form-input" id="targetFibre">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddClientModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveClient()">Add Client</button>
+            </div>
+        </div>
+    </div>
 
-        let selectedClientId = 1;
+    <script>
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://aurruayyeaggeiggzxnt.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_Xf6PD6ZHVQVKV59X2-u2UQ_TESbj4AC';
+        
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let clients = [];
+        let selectedClientId = null;
+
+        // Load clients from Supabase
+        async function loadClients() {
+            try {
+                const { data, error } = await supabase
+                    .from('clients')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+                
+                clients = data || [];
+                renderClientList();
+                
+                if (clients.length > 0 && !selectedClientId) {
+                    selectClient(clients[0].id);
+                }
+            } catch (error) {
+                console.error('Error loading clients:', error);
+                document.getElementById('clientList').innerHTML = '<div class="loading">Error loading clients</div>';
+            }
+        }
 
         // Render client list
         function renderClientList(filter = '') {
             const list = document.getElementById('clientList');
             const filtered = clients.filter(c => 
-                c.name.toLowerCase().includes(filter.toLowerCase())
+                `${c.first_name} ${c.last_name}`.toLowerCase().includes(filter.toLowerCase())
             );
 
-            list.innerHTML = filtered.map(client => `
-                <div class="client-item ${client.id === selectedClientId ? 'active' : ''}" onclick="selectClient(${client.id})">
-                    <div class="client-avatar">${client.initials}</div>
-                    <div class="client-info">
-                        <div class="client-name">${client.name}</div>
-                        <div class="client-meta">
-                            <span class="client-status ${client.status}"></span>
-                            <span>${client.sport}</span>
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state"><p>No clients yet</p></div>';
+                document.getElementById('clientCount').textContent = '0';
+                return;
+            }
+
+            list.innerHTML = filtered.map(client => {
+                const initials = `${client.first_name[0]}${client.last_name[0]}`;
+                const fullName = `${client.first_name} ${client.last_name}`;
+                return `
+                    <div class="client-item ${client.id === selectedClientId ? 'active' : ''}" onclick="selectClient('${client.id}')">
+                        <div class="client-avatar">${initials}</div>
+                        <div class="client-info">
+                            <div class="client-name">${fullName}</div>
+                            <div class="client-meta">
+                                <span class="client-status ${client.status || 'active'}"></span>
+                                <span>${client.sport || 'No sport'}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             document.getElementById('clientCount').textContent = filtered.length;
         }
@@ -1083,54 +986,53 @@
         // Render dashboard
         function renderDashboard() {
             const client = clients.find(c => c.id === selectedClientId);
-            if (!client) return;
-
-            document.getElementById('pageTitle').textContent = client.name;
-
-            const dashboard = document.getElementById('dashboard');
-            
-            // Calculate days until comp
-            let daysUntilComp = null;
-            if (client.nextComp) {
-                const compDate = new Date(client.nextComp.date);
-                const today = new Date();
-                daysUntilComp = Math.ceil((compDate - today) / (1000 * 60 * 60 * 24));
+            if (!client) {
+                document.getElementById('dashboard').innerHTML = `
+                    <div class="empty-dashboard">
+                        <div class="empty-dashboard-icon">👥</div>
+                        <h2 class="empty-dashboard-title">No Client Selected</h2>
+                        <p class="empty-dashboard-text">Select a client from the sidebar or add a new client to get started.</p>
+                        <button class="btn btn-primary" onclick="openAddClientModal()">Add Your First Client</button>
+                    </div>
+                `;
+                return;
             }
 
+            const fullName = `${client.first_name} ${client.last_name}`;
+            const initials = `${client.first_name[0]}${client.last_name[0]}`;
+            document.getElementById('pageTitle').textContent = fullName;
+
             // Calculate weeks with coach
-            const startDate = new Date(client.startDate);
+            const startDate = new Date(client.start_date || client.created_at);
             const today = new Date();
             const weeksWithCoach = Math.floor((today - startDate) / (1000 * 60 * 60 * 24 * 7));
 
+            const dashboard = document.getElementById('dashboard');
+            
             dashboard.innerHTML = `
                 <!-- Client Header Card -->
                 <div class="client-header-card">
-                    <div class="client-header-avatar">${client.initials}</div>
+                    <div class="client-header-avatar">${initials}</div>
                     <div class="client-header-info">
-                        <h2 class="client-header-name">${client.name}</h2>
+                        <h2 class="client-header-name">${fullName}</h2>
                         <div class="client-header-meta">
-                            <span>📧 ${client.name.toLowerCase().replace(' ', '.')}@email.com</span>
-                            <span>📅 Started ${formatDate(client.startDate)}</span>
+                            <span>📧 ${client.email}</span>
+                            <span>📅 Started ${formatDate(client.start_date || client.created_at)}</span>
                             <span>⏱ ${weeksWithCoach} weeks</span>
                         </div>
                         <div class="client-tags">
-                            <span class="tag sport">${client.sport}</span>
-                            <span class="tag phase">${client.phase}</span>
-                            ${daysUntilComp !== null ? `<span class="tag comp">${daysUntilComp} days to comp</span>` : ''}
+                            ${client.sport ? `<span class="tag sport">${client.sport}</span>` : ''}
+                            ${client.phase ? `<span class="tag phase">${client.phase}</span>` : ''}
                         </div>
                     </div>
                     <div class="client-header-stats">
                         <div class="header-stat">
-                            <div class="header-stat-value">${client.weight}</div>
+                            <div class="header-stat-value">${client.current_weight || '-'}</div>
                             <div class="header-stat-label">Current (kg)</div>
                         </div>
                         <div class="header-stat">
-                            <div class="header-stat-value">${client.targetWeight}</div>
+                            <div class="header-stat-value">${client.target_weight || '-'}</div>
                             <div class="header-stat-label">Target (kg)</div>
-                        </div>
-                        <div class="header-stat">
-                            <div class="header-stat-value">${client.checkins.length > 0 ? client.checkins[0].compliance + '%' : '-'}</div>
-                            <div class="header-stat-label">Compliance</div>
                         </div>
                     </div>
                 </div>
@@ -1144,23 +1046,23 @@
                     <div class="card-body">
                         <div class="targets-grid">
                             <div class="target-item">
-                                <div class="target-value calories">${client.targets.calories.toLocaleString()}</div>
+                                <div class="target-value calories">${client.target_calories ? client.target_calories.toLocaleString() : '-'}</div>
                                 <div class="target-label">Calories</div>
                             </div>
                             <div class="target-item">
-                                <div class="target-value protein">${client.targets.protein}g</div>
+                                <div class="target-value protein">${client.target_protein || '-'}g</div>
                                 <div class="target-label">Protein</div>
                             </div>
                             <div class="target-item">
-                                <div class="target-value carbs">${client.targets.carbs}g</div>
+                                <div class="target-value carbs">${client.target_carbs || '-'}g</div>
                                 <div class="target-label">Carbs</div>
                             </div>
                             <div class="target-item">
-                                <div class="target-value fat">${client.targets.fat}g</div>
+                                <div class="target-value fat">${client.target_fat || '-'}g</div>
                                 <div class="target-label">Fat</div>
                             </div>
                             <div class="target-item">
-                                <div class="target-value fibre">${client.targets.fibre}g</div>
+                                <div class="target-value fibre">${client.target_fibre || '-'}g</div>
                                 <div class="target-label">Fibre</div>
                             </div>
                         </div>
@@ -1172,10 +1074,15 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Current Meal Plan</h3>
-                            <span class="card-action" onclick="openMealPlanner()">Edit Plan</span>
+                            <span class="card-action" onclick="openMealPlanner()">Create Plan</span>
                         </div>
                         <div class="card-body">
-                            ${client.mealPlan ? renderMealPlan(client.mealPlan) : renderEmptyState('meal')}
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🍽</div>
+                                <div class="empty-state-title">No meal plan yet</div>
+                                <div class="empty-state-text">Create a meal plan for this client</div>
+                                <button class="empty-state-btn" onclick="openMealPlanner()">Create Plan</button>
+                            </div>
                         </div>
                     </div>
 
@@ -1186,7 +1093,11 @@
                             <span class="card-action" onclick="viewAllCheckins()">View All</span>
                         </div>
                         <div class="card-body">
-                            ${client.checkins.length > 0 ? renderCheckins(client.checkins) : renderEmptyState('checkin')}
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📋</div>
+                                <div class="empty-state-title">No check-ins yet</div>
+                                <div class="empty-state-text">Waiting for first check-in</div>
+                            </div>
                         </div>
                     </div>
 
@@ -1197,7 +1108,12 @@
                             <span class="card-action" onclick="addComp()">Add Comp</span>
                         </div>
                         <div class="card-body">
-                            ${client.comps.length > 0 ? renderComps(client.comps) : renderEmptyState('comp')}
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🏆</div>
+                                <div class="empty-state-title">No competitions scheduled</div>
+                                <div class="empty-state-text">Add upcoming competitions</div>
+                                <button class="empty-state-btn" onclick="addComp()">Add Competition</button>
+                            </div>
                         </div>
                     </div>
 
@@ -1208,165 +1124,137 @@
                             <span class="card-action" onclick="saveNotes()">Save</span>
                         </div>
                         <div class="card-body">
-                            <textarea class="notes-area" placeholder="Add notes about this client...">${client.notes}</textarea>
+                            <textarea class="notes-area" id="coachNotes" placeholder="Add notes about this client...">${client.coach_notes || ''}</textarea>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        // Render meal plan
-        function renderMealPlan(mealPlan) {
-            return `
-                <div class="meal-plan-preview">
-                    ${mealPlan.meals.map(meal => `
-                        <div class="meal-row">
-                            <div class="meal-name">${meal.name}</div>
-                            <div class="meal-foods">${meal.foods}</div>
-                            <div class="meal-macros">
-                                <span style="color: var(--protein)">${meal.macros.p}P</span>
-                                <span style="color: var(--carbs)">${meal.macros.c}C</span>
-                                <span style="color: var(--fats)">${meal.macros.f}F</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        // Render check-ins
-        function renderCheckins(checkins) {
-            return `
-                <div class="checkin-list">
-                    ${checkins.slice(0, 4).map(checkin => `
-                        <div class="checkin-item">
-                            <div class="checkin-date">${formatDateShort(checkin.date)}</div>
-                            <div class="checkin-weight">${checkin.weight} kg</div>
-                            <div class="checkin-compliance">
-                                <div class="compliance-bar">
-                                    <div class="compliance-fill ${checkin.compliance >= 90 ? '' : checkin.compliance >= 75 ? 'medium' : 'low'}" style="width: ${checkin.compliance}%"></div>
-                                </div>
-                                <span class="compliance-value">${checkin.compliance}%</span>
-                            </div>
-                            <span class="checkin-status ${checkin.status}">${checkin.status === 'reviewed' ? 'Reviewed' : 'Pending'}</span>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        // Render competitions
-        function renderComps(comps) {
-            return `
-                <div class="comp-list">
-                    ${comps.map(comp => {
-                        const date = new Date(comp.date);
-                        return `
-                            <div class="comp-item">
-                                <div class="comp-date">
-                                    <div class="comp-date-day">${date.getDate()}</div>
-                                    <div class="comp-date-month">${date.toLocaleString('default', { month: 'short' })}</div>
-                                </div>
-                                <div class="comp-info">
-                                    <div class="comp-name">${comp.name}</div>
-                                    <div class="comp-meta">${date.getFullYear()}</div>
-                                </div>
-                                ${comp.weightClass ? `
-                                    <div class="comp-weight">
-                                        <div class="comp-weight-target">${comp.weightClass} kg</div>
-                                        <div class="comp-weight-label">Weight Class</div>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
-        }
-
-        // Render empty states
-        function renderEmptyState(type) {
-            const states = {
-                meal: {
-                    icon: '🍽',
-                    title: 'No meal plan yet',
-                    text: 'Create a meal plan for this client',
-                    action: 'Create Plan',
-                    onclick: 'openMealPlanner()'
-                },
-                checkin: {
-                    icon: '📋',
-                    title: 'No check-ins yet',
-                    text: 'Waiting for first check-in',
-                    action: 'Send Reminder',
-                    onclick: 'sendReminder()'
-                },
-                comp: {
-                    icon: '🏆',
-                    title: 'No competitions scheduled',
-                    text: 'Add upcoming competitions',
-                    action: 'Add Competition',
-                    onclick: 'addComp()'
-                }
-            };
-
-            const state = states[type];
-            return `
-                <div class="empty-state">
-                    <div class="empty-state-icon">${state.icon}</div>
-                    <div class="empty-state-title">${state.title}</div>
-                    <div class="empty-state-text">${state.text}</div>
-                    <button class="empty-state-btn" onclick="${state.onclick}">${state.action}</button>
-                </div>
-            `;
-        }
-
-        // Helper functions
+        // Helper function
         function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
             const date = new Date(dateStr);
             return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
         }
 
-        function formatDateShort(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+        // Modal functions
+        function openAddClientModal() {
+            document.getElementById('addClientModal').classList.add('active');
         }
 
-        // Action functions (placeholders for now)
-        function addClient() {
-            alert('Add Client modal will open here');
+        function closeAddClientModal() {
+            document.getElementById('addClientModal').classList.remove('active');
+            // Clear form
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('sport').value = '';
+            document.getElementById('currentWeight').value = '';
+            document.getElementById('targetWeight').value = '';
+            document.getElementById('phase').value = 'Onboarding';
+            document.getElementById('targetCalories').value = '';
+            document.getElementById('targetProtein').value = '';
+            document.getElementById('targetCarbs').value = '';
+            document.getElementById('targetFat').value = '';
+            document.getElementById('targetFibre').value = '';
         }
 
+        // Save client to Supabase
+        async function saveClient() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            if (!firstName || !lastName || !email) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const clientData = {
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                sport: document.getElementById('sport').value || null,
+                current_weight: parseFloat(document.getElementById('currentWeight').value) || null,
+                target_weight: parseFloat(document.getElementById('targetWeight').value) || null,
+                phase: document.getElementById('phase').value,
+                target_calories: parseInt(document.getElementById('targetCalories').value) || null,
+                target_protein: parseInt(document.getElementById('targetProtein').value) || null,
+                target_carbs: parseInt(document.getElementById('targetCarbs').value) || null,
+                target_fat: parseInt(document.getElementById('targetFat').value) || null,
+                target_fibre: parseInt(document.getElementById('targetFibre').value) || null,
+                status: 'active'
+            };
+
+            try {
+                const { data, error } = await supabase
+                    .from('clients')
+                    .insert([clientData])
+                    .select();
+
+                if (error) throw error;
+
+                closeAddClientModal();
+                await loadClients();
+                
+                if (data && data[0]) {
+                    selectClient(data[0].id);
+                }
+            } catch (error) {
+                console.error('Error saving client:', error);
+                alert('Error saving client: ' + error.message);
+            }
+        }
+
+        // Save notes
+        async function saveNotes() {
+            if (!selectedClientId) return;
+
+            const notes = document.getElementById('coachNotes').value;
+
+            try {
+                const { error } = await supabase
+                    .from('clients')
+                    .update({ coach_notes: notes })
+                    .eq('id', selectedClientId);
+
+                if (error) throw error;
+                
+                // Update local data
+                const client = clients.find(c => c.id === selectedClientId);
+                if (client) client.coach_notes = notes;
+                
+                alert('Notes saved!');
+            } catch (error) {
+                console.error('Error saving notes:', error);
+                alert('Error saving notes: ' + error.message);
+            }
+        }
+
+        // Placeholder functions
         function openMealPlanner() {
-            alert('Meal Planner will open here');
+            window.open('Meal-planner.html', '_blank');
         }
 
         function openCheckIn() {
-            alert('Check-in form will open here');
+            alert('Check-in form coming soon');
         }
 
         function exportClient() {
-            alert('Export options will appear here');
+            alert('Export feature coming soon');
         }
 
         function editTargets() {
-            alert('Edit targets modal will open here');
+            alert('Edit targets coming soon');
         }
 
         function viewAllCheckins() {
-            alert('Full check-in history will open here');
+            alert('Check-in history coming soon');
         }
 
         function addComp() {
-            alert('Add competition modal will open here');
-        }
-
-        function saveNotes() {
-            alert('Notes saved!');
-        }
-
-        function sendReminder() {
-            alert('Reminder sent to client');
+            alert('Add competition coming soon');
         }
 
         // Search functionality
@@ -1374,9 +1262,15 @@
             renderClientList(e.target.value);
         });
 
-        // Initial render
-        renderClientList();
-        renderDashboard();
+        // Close modal on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAddClientModal();
+            }
+        });
+
+        // Initial load
+        loadClients();
     </script>
 </body>
 </html>
